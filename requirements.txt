@@ -1,0 +1,6 @@
+channels_redis
+djangorestframework
+pillow
+django-environ
+django-cors-headers
+djangorestframework-simplejwt
