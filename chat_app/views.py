@@ -187,7 +187,7 @@ class ViewAllMessagesTest(APIView):
         try:
             access = request.GET.get('access', '')
             user = access
-            room_obj = Room.objects.get(id=int(user))
+            room_obj = Room.objects.get(id=int(request.GET.get('room_id', '')))
 
             messages = Message.objects.filter(room=room_obj)
             ser = MessageSerializer(messages, many=True)
