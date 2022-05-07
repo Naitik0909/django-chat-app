@@ -21,7 +21,7 @@ window.onload = () => {
   // console.log('heere');
   const token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMDAxNjMzLCJpYXQiOjE2NTE4Mjg4MzMsImp0aSI6IjA5MDI0MTJhMjA4OTQ2YzJiMmNlNDhlNDRjNGIwYzJjIiwidXNlcl9pZCI6M30.e2vwlQr0upw06vrQahb14cJJX6S1XTvxyWswK_drERo";
   const userAction = async () => {
-     const response=await fetch('http://127.0.0.1:8000/chat_screen_test/?access='+USER_ID
+     const response=await fetch('https://frame-change-backend.herokuapp.com/chat_screen_test/?access='+USER_ID
       );
 
     const myJson = await response.json(); //extract JSON from the http response
@@ -114,7 +114,7 @@ window.onload = () => {
       // console.log(chat.person.slice(6, 7))
       const getReq = async () => {
         // MAKE DYNAMIC
-        const response=await fetch('http://127.0.0.1:8000/view_messages/?room_id='+room_id+'&access=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMTA2NzM3LCJpYXQiOjE2NTE5MzM5MzcsImp0aSI6ImUyM2ZmZDU2OTM0NDQyYzliMjdiMDA3NTQ3ZmViM2Y0IiwidXNlcl9pZCI6M30.XJx29e4-9v_JsWyxsuObSaRqZAUkgvDlIeYQ9CnN1wU'
+        const response=await fetch('https://frame-change-backend.herokuapp.com/view_all_messages_test/?room_id='+room_id+'&access='+USER_ID
       );
 
       const myJson = await response.json(); //extract JSON from the http response

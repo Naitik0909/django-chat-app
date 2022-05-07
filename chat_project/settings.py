@@ -95,6 +95,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://fc.unisight.in",
     "https://fc-frontend.pages.dev"
+    "https://frame-change-backend.herokuapp.com"
 ]
 
 
