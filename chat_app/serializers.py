@@ -75,11 +75,16 @@ class MessageSerializer(serializers.ModelSerializer):
 class ParticipantSerializer(serializers.ModelSerializer):
 
     user_name = serializers.SerializerMethodField('get_user_name')
+    last_message = serializers.SerializerMethodField('get_last_message')
 
     class Meta:
         model = Participant
-        fields = ('room', 'user', 'user_name')
+        fields = ('room', 'user', 'user_name', 'last_message')
 
     def get_user_name(self, obj):
         user = obj.user
         return f"{user.first_name} {user.last_name}"
+    
+    def get_last_message(self, obj):
+        last_message =  Message.objects.filter(room=obj.room).last()
+        return last_message.message

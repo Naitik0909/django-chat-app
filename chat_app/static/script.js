@@ -63,18 +63,19 @@ window.onload = () => {
 
       var USER_ID = findGetParameter('user_id');
       var room_id = f.getAttribute('data-chat').slice(6, 7);
-
+      if(chatSocket!=null){
+        chatSocket.close();
+      }
       // ON CLICKING CHAT WINDOW
-
       chatSocket = new WebSocket(
-          'ws://'
+        (window.location.protocol == 'https:' ? 'wss://' : 'ws://')
+          // 'ws://'
           + window.location.host
           + '/ws/chat/'
           + room_id
           + '/'
           + '?access=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNzM1MjMwLCJpYXQiOjE2NTE1NjI0MzAsImp0aSI6IjgzYzFhMjhjZGQ5YzRlMDhhMTIyNzZmODRlNjE5NmJiIiwidXNlcl9pZCI6MX0.16cUyDr2VhkFvcNjYSW34kIQMhhETnsD85WbXCLGsP8'
       );
-
          // When someone(anyone) sends message-
     chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);
@@ -192,32 +193,6 @@ function sendNewMessage(){
     }));
 
     $('#message-content').val('');
-
-
-        // When someone(anyone) sends message-
-    // chatSocket.onmessage = function(e) {
-    //   const data = JSON.parse(e.data);
-    //     // add new message to chatbox
-    //     console.log("RECEIVED A MESSAGE- ");
-    //     console.log(data);
-    //     if(data.sender==USER_ID){
-    //       $('.active-chat').append(`
-    //             <div class="bubble me">
-    //                 `+data.message+`
-    //             </div>
-                
-    //         `);
-    //     }
-    //     else{
-    //       $('.active-chat').append(`
-    //             <div class="bubble you">
-    //                 `+data.message+`
-    //             </div>
-                
-    //         `);
-    //     }
-          
-    // };
 
 // MAKE DYNAMIC- DISCONNECT USEFROM SOCKET
 
