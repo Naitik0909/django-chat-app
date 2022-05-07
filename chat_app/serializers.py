@@ -8,6 +8,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from .models import Message, Participant, Room
 
+from datetime import datetime, timedelta
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -37,18 +39,31 @@ class BlacklistTokenSerializer(serializers.Serializer):
 
 class MessageSerializer(serializers.ModelSerializer):
 
-    sender_name = serializers.SerializerMethodField('get_sender_name')
+    sender_name     = serializers.SerializerMethodField('get_sender_name')
+    sent_at_time    = serializers.SerializerMethodField('get_sent_at_time')
+    sent_at_date    = serializers.SerializerMethodField('get_sent_at_date')
     # room_name = serializers.SerializerMethodField('get_room_name')
     # room_type = serializers.SerializerMethodField('get_room_type')
 
     class Meta:
         model = Message
-        fields = ('id', 'sender','sender_name','message', 'sender_type', 'sent_at')
+        fields = ('id', 'sender','sender_name','message', 'sender_type', 'sent_at_time', 'sent_at_date')
     
     def get_sender_name(self, obj):
         sender = obj.sender
         return f"{sender.first_name} {sender.last_name}"
+    
+    def get_sent_at_time(self, obj):
+        return obj.sent_at.strftime("%I:%M %p")
 
+    def get_sent_at_date(self, obj):
+        today = datetime.today()
+        if obj.sent_at.date() == today.date():
+            return "Today"
+        elif obj.sent_at.date() == today.date() - timedelta(days=1):
+            return "Yesterday"
+        else:
+            return obj.sent_at.strftime("%d %B")
     # def get_room_name(self, obj):
     #     room = obj.room
     #     return f"{room.name}"
