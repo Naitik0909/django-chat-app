@@ -7,3 +7,4 @@ djangorestframework-simplejwt
 gunicorn
 whitenoise
 django-heroku
+daphne
