@@ -1,6 +1,8 @@
 
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +17,7 @@ SECRET_KEY = 'django-insecure-wsp4%q29!u&&dibhdqudl8w-9@y4@2pql$_z=gi+l8ikn3_&zz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 # Configure Django App for Heroku.
 # import django_heroku
@@ -74,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_project.wsgi.application'
 
-ASGI_APPLICATION = "chat_project.asgi.application"
+ASGI_APPLICATION = "chat_project.routing.application"
 
 
 REST_FRAMEWORK = {
@@ -152,6 +154,11 @@ DATABASES = {
 }
 
 
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -193,13 +200,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# LOCAL SETTINGS
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#             # "hosts" : [('redis://:Wo43nT7kRLyzFKAresHqPU7vGGVrYzFf@redis-19087.c275.us-east-1-4.ec2.cloud.redislabs.com:19087')]
+#         },
+#     },
+# }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-            # "hosts" : [('redis://:Wo43nT7kRLyzFKAresHqPU7vGGVrYzFf@redis-19087.c275.us-east-1-4.ec2.cloud.redislabs.com:19087')]
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
