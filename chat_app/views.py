@@ -140,6 +140,31 @@ class ChatScreen(APIView):
         except Exception as e:
             return JsonResponse({'error' : str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+class ChatScreenTest(APIView):
+
+    def get(self, request):
+
+        try:
+            access = request.GET.get('access', '')
+
+            user = User.objects.get(id=int(access))
+            # check if access token valid
+            if user:
+                # Fetch only private rooms
+                user_private_room_ids = list(Participant.objects.filter(user=user, room__type='1').values_list('room', flat=True))
+                participants = Participant.objects.none()
+                for room in user_private_room_ids:
+                    room_obj = Room.objects.get(id=int(room))
+                    participants = participants | Participant.objects.filter(room=room_obj).exclude(user=user)
+                ser = ParticipantSerializer(participants, many=True)
+
+                return JsonResponse(ser.data, status=status.HTTP_200_OK, safe=False)
+            
+            return JsonResponse({'error' : 'Invalid access token'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return JsonResponse({'error' : str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class ViewAllMessages(APIView):
 
@@ -155,6 +180,22 @@ class ViewAllMessages(APIView):
         
         except Exception as e:
             return JsonResponse({'error' : str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ViewAllMessagesTest(APIView):
+
+    def get(self, request):
+        try:
+            access = request.GET.get('access', '')
+            user = access
+            room_obj = Room.objects.get(id=int(user))
+
+            messages = Message.objects.filter(room=room_obj)
+            ser = MessageSerializer(messages, many=True)
+            return JsonResponse(ser.data, status=status.HTTP_200_OK, safe=False)
+        
+        except Exception as e:
+            return JsonResponse({'error' : str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SendMessage(APIView):
 

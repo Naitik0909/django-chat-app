@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import (
 from django.conf.urls.static import static
 from django.conf import settings
 
-from chat_app.views import LoginUser, BlacklistToken, chatscreen, ChatScreen, CreateRoom, ViewAllMessages, SendMessage
+from chat_app.views import LoginUser, BlacklistToken, chatscreen, ChatScreen, CreateRoom, ViewAllMessages, SendMessage, ChatScreenTest, ViewAllMessagesTest
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,6 +22,9 @@ urlpatterns = [
     path('chat_screen/', ChatScreen.as_view(), name='get_all_chats'),
     path('view_messages/', ViewAllMessages.as_view(), name='view_messages'),
     path('send_message/', SendMessage.as_view(), name='send_message'),
+
+    path('chat_screen_test/', ChatScreenTest.as_view(), name='get_all_chats_test'),
+    path('view_all_messages_test/', ViewAllMessagesTest.as_view(), name='view_messages_test'),
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -16,10 +16,12 @@ function findGetParameter(parameterName) {
 }
 
 window.onload = () => {
+  var USER_ID = findGetParameter('user_id');
+
   // console.log('heere');
   const token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMDAxNjMzLCJpYXQiOjE2NTE4Mjg4MzMsImp0aSI6IjA5MDI0MTJhMjA4OTQ2YzJiMmNlNDhlNDRjNGIwYzJjIiwidXNlcl9pZCI6M30.e2vwlQr0upw06vrQahb14cJJX6S1XTvxyWswK_drERo";
   const userAction = async () => {
-     const response=await fetch('http://127.0.0.1:8000/chat_screen/?access=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMTA2NzM3LCJpYXQiOjE2NTE5MzM5MzcsImp0aSI6ImUyM2ZmZDU2OTM0NDQyYzliMjdiMDA3NTQ3ZmViM2Y0IiwidXNlcl9pZCI6M30.XJx29e4-9v_JsWyxsuObSaRqZAUkgvDlIeYQ9CnN1wU'
+     const response=await fetch('http://127.0.0.1:8000/chat_screen_test/?access='+USER_ID
       );
 
     const myJson = await response.json(); //extract JSON from the http response
@@ -116,7 +118,7 @@ window.onload = () => {
       );
 
       const myJson = await response.json(); //extract JSON from the http response
-        // console.log(myJson); // log the result
+        console.log(myJson); // log the result
 
         if(myJson.length==0){
           $('.right').append(`
