@@ -36,3 +36,7 @@ class Message(models.Model):
     sender_type = models.CharField(choices=SENDER_TYPE, max_length=1, help_text="Job Seeker- 0, School District- 1")
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.sender.username} | {self.room.name}"
