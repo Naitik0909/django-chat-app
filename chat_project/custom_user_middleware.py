@@ -38,9 +38,11 @@ class CustomAuthMiddleware:
         # checking if it is a valid user ID, or if scope["user"] is already
         # populated).
         # Parse query_string
-        query_params = parse_qs(scope["query_string"].decode())
-        print("HEY", query_params)
-        scope['user'] = await get_user(query_params['access'][0])
-        # scope['user'] = await get_user(int(scope["query_string"]))
-
+        try:
+            query_params = parse_qs(scope["query_string"].decode())
+            print("HEY", query_params)
+            scope['user'] = await get_user(query_params['access'][0])
+            # scope['user'] = await get_user(int(scope["query_string"]))
+        except:
+            pass
         return await self.app(scope, receive, send)

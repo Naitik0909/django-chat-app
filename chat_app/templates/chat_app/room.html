@@ -10,15 +10,30 @@
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
+        //gets the type of browser
+        function detectBrowser() { 
+            if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) {
+                return 'Opera';
+            } else if(navigator.userAgent.indexOf("Chrome") != -1 ) {
+                return 'Chrome';
+            } else if(navigator.userAgent.indexOf("Safari") != -1) {
+                return 'Safari';
+            } else if(navigator.userAgent.indexOf("Firefox") != -1 ){
+                return 'Firefox';
+            } else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
+                return 'IE';//crap
+            } else {
+                return 'Unknown';
+            }
+        } 
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket(
-            'wss://'
-            + "https://framechange-messaging.herokuapp.com"
-            + '/ws/chat/'
+            'ws://'
+            + window.location.host
+            + '/ws/chat/basic/'
             + roomName
             + '/'
-            + '?access=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNzM1MjMwLCJpYXQiOjE2NTE1NjI0MzAsImp0aSI6IjgzYzFhMjhjZGQ5YzRlMDhhMTIyNzZmODRlNjE5NmJiIiwidXNlcl9pZCI6MX0.16cUyDr2VhkFvcNjYSW34kIQMhhETnsD85WbXCLGsP8'
         );
 
         console.log(chatSocket);
@@ -44,9 +59,11 @@
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message,
-                'room_id': '1',
-                'sender': '1',
-                'sender_type': '1',
+                // 'room_id': '1',
+                // 'sender': '1',
+                // 'sender_type': '1',
+                'username' : '1',
+                'browser': detectBrowser()
             }));
             messageInputDom.value = '';
         };
